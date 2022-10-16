@@ -1,42 +1,7 @@
-import fengsha as fdust
+import aeolian as fdust
 from collections import Iterable
 import numpy as np
 import xarray as xr
-
-
-def fengsha_albedo(rhoa, volumetric_soil_moisture, ssm, land, ustar, clayfrac, sandfrac, drag_partition, dry_threshold):
-    """This calculates the total flux using the modified fengsha parameterization for surface friction based on
-        Chappel and Webb 2017
-
-    Parameters
-    ----------
-    rhoa : float
-        surface air density [kg/m3]
-    volumetric_soil_moisture : float
-        volumetric soil moisture [m3/m3]
-    ssm : float
-        Sediment Supply Map [-]
-    land : float
-        Land or water flag [1 for land 0 for water]
-    ustar : float
-        Boundary layer friction velocity
-    clayfrac : float
-        Fractional clay content [-] : range 0->1
-    sandfrac : float
-        Fractional sand content [-] : range 0->1
-    drag_partition : float
-        drag partition [-]
-    dry_threshold : float
-        Dry Threshold friction velocity [m/s]
-
-    Returns
-    -------
-    float
-        Total mass emitted [g/s]
-
-    """
-    emission = fdust.fengsha_albedo(rhoa, volumetric_soil_moisture, ssm, land, ustar, clayfrac, sandfrac, drag_partition, dry_threshold)
-    return emission
 
 
 def fengsha(rhoa, volumetric_soil_moisture, ssm, land, ustar, clayfrac, sandfrac, drag_partition, dry_threshold):

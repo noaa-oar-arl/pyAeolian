@@ -1,21 +1,9 @@
 !    -*- f90 -*-
 ! Note: the context of this file is case sensitive.
 
-python module fengsha ! in 
-    interface  ! in :fengsha
-        subroutine fengsha_albedo(rho_phy,smois,ssm,xland,ust,clay,sand,rdrag,u_ts0,emis_dust) ! in :fengsha:fengsha.F90
-            real intent(in) :: rho_phy
-            real intent(in) :: smois
-            real intent(in) :: ssm
-            real intent(in) :: xland
-            real intent(in) :: ust
-            real intent(in) :: clay
-            real intent(in) :: sand
-            real intent(in) :: rdrag
-            real intent(in) :: u_ts0
-            real intent(out) :: emis_dust
-        end subroutine fengsha_albedo
-        subroutine fengsha(rho_phy,smois,ssm,xland,ust,clay,sand,rdrag,u_ts0,emis_dust) ! in :fengsha:fengsha.F90
+python module aeolian ! in
+    interface  ! in :aeolian
+        subroutine fengsha(rho_phy,smois,ssm,xland,ust,clay,sand,rdrag,u_ts0,emis_dust) ! in :aeolian:aeolian.F90
             real intent(in) :: rho_phy
             real intent(in) :: smois
             real intent(in) :: ssm
@@ -27,54 +15,54 @@ python module fengsha ! in
             real intent(in) :: u_ts0
             real intent(out) :: emis_dust
         end subroutine fengsha
-        subroutine mackinnon_drag(z0,r) ! in :fengsha:fengsha.F90
+        subroutine mackinnon_drag(z0,r) ! in :aeolian:aeolian.F90
             real intent(in) :: z0
             real intent(out) :: r
         end subroutine mackinnon_drag
-        subroutine mb95_drag(z0,r) ! in :fengsha:fengsha.F90
+        subroutine mb95_drag(z0,r) ! in :aeolian:aeolian.F90
             real intent(in) :: z0
             real intent(out) :: r
         end subroutine mb95_drag
-        subroutine fengsha_hflux(ust,utst,q) ! in :fengsha:fengsha.F90
+        subroutine fengsha_hflux(ust,utst,q) ! in :aeolian:aeolian.F90
             real intent(in) :: ust
             real intent(in) :: utst
             real intent(out) :: q
-        end subroutine fengsha_hflux
-        subroutine mb95_kvh(clay,kvh) ! in :fengsha:fengsha.F90
+        end subroutine aeolian_hflux
+        subroutine mb95_kvh(clay,kvh) ! in :aeolian:aeolian.F90
             real intent(in) :: clay
             real intent(out) :: kvh
         end subroutine mb95_kvh
-        subroutine fecan_moisture_correction(vol_soil_moisture,sand,clay,h) ! in :fengsha:fengsha.F90
+        subroutine fecan_moisture_correction(vol_soil_moisture,sand,clay,h) ! in :aeolian:aeolian.F90
             real intent(in) :: vol_soil_moisture
             real intent(in) :: sand
             real intent(in) :: clay
             real intent(out) :: h
         end subroutine fecan_moisture_correction
-        subroutine shao_1996_soil_moisture(w,h) ! in :fengsha:fengsha.F90
+        subroutine shao_1996_soil_moisture(w,h) ! in :aeolian:aeolian.F90
             real intent(in) :: w
             real intent(out) :: h
         end subroutine shao_1996_soil_moisture
-        subroutine shao_2004_soil_moisture(w,h) ! in :fengsha:fengsha.F90
+        subroutine shao_2004_soil_moisture(w,h) ! in :aeolian:aeolian.F90
             real intent(in) :: w
             real intent(out) :: h
         end subroutine shao_2004_soil_moisture
-        subroutine fecan_dry_limit(clay,drylimit) ! in :fengsha:fengsha.F90
+        subroutine fecan_dry_limit(clay,drylimit) ! in :aeolian:aeolian.F90
             real intent(in) :: clay
             real intent(out) :: drylimit
         end subroutine fecan_dry_limit
-        subroutine volumetric_to_gravimetric(vsoil,sandfrac,grav_soil) ! in :fengsha:fengsha.F90
+        subroutine volumetric_to_gravimetric(vsoil,sandfrac,grav_soil) ! in :aeolian:aeolian.F90
             real intent(in) :: vsoil
             real intent(in) :: sandfrac
             real intent(out) :: grav_soil
         end subroutine volumetric_to_gravimetric
-        subroutine modified_threshold(u_ts0,h,drag,u_ts) ! in :fengsha:fengsha.F90
+        subroutine modified_threshold(u_ts0,h,drag,u_ts) ! in :aeolian:aeolian.F90
             real intent(in) :: u_ts0
             real intent(in) :: h
             real intent(in) :: drag
             real intent(out) :: u_ts
         end subroutine modified_threshold
-    end interface 
-end python module fengsha
+    end interface
+end python module aeolian
 
 ! This file was auto-generated with f2py (version:2).
 ! See http://cens.ioc.ee/projects/f2py2e/
