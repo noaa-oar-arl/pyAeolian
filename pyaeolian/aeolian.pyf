@@ -15,6 +15,14 @@ python module aeolian ! in
             real intent(in) :: u_ts0
             real intent(out) :: emis_dust
         end subroutine fengsha
+        subroutine ginouxdustemission(radius,smois,xland,w10,rho_phy,emis_dust) ! in :aeolian:aeolian.F90
+            real dimension(:),intent(in) :: radius
+            real intent(in) :: smois
+            real intent(in) :: xland
+            real intent(in) :: w10
+            real intent(in) :: rho_phy
+            real dimension(:),intent(out) :: emis_dust
+        end subroutine ginouxdustemission
         subroutine mackinnon_drag(z0,r) ! in :aeolian:aeolian.F90
             real intent(in) :: z0
             real intent(out) :: r
@@ -27,7 +35,7 @@ python module aeolian ! in
             real intent(in) :: ust
             real intent(in) :: utst
             real intent(out) :: q
-        end subroutine aeolian_hflux
+        end subroutine fengsha_hflux
         subroutine mb95_kvh(clay,kvh) ! in :aeolian:aeolian.F90
             real intent(in) :: clay
             real intent(out) :: kvh
@@ -61,8 +69,19 @@ python module aeolian ! in
             real intent(in) :: drag
             real intent(out) :: u_ts
         end subroutine modified_threshold
+        subroutine ginouxdrythreshold(radius,u_thresh0) ! in :aeolian:aeolian.F90
+            real dimension(:),intent(in) :: radius
+            real dimension(:),intent(out) :: u_thresh0
+        end subroutine ginouxdrythreshold
+        subroutine dustaerosoldistributionkok(radius,rlow,rup,distribution) ! in :aeolian:aeolian.F90
+            real dimension(:),intent(in) :: radius
+            real dimension(:),intent(in) :: rlow
+            real dimension(:),intent(in) :: rup
+            real dimension(:),intent(out) :: distribution
+        end subroutine dustaerosoldistributionkok
     end interface
 end python module aeolian
 
-! This file was auto-generated with f2py (version:2).
-! See http://cens.ioc.ee/projects/f2py2e/
+! This file was auto-generated with f2py (version:1.23.4).
+! See:
+! https://web.archive.org/web/20140822061353/http://cens.ioc.ee/projects/f2py2e
