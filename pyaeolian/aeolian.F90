@@ -61,7 +61,7 @@ subroutine fengsha(rho_phy,smois,ssm,xland,ust,clay,sand,rdrag,u_ts0,emis_dust)
 
 end subroutine fengsha
 
-subroutine GinouxDustEmission(radius, smois, ssm, xland, w10, u_ts0, rho_phy, Ch_DU, emis_dust)
+subroutine GinouxDustEmission(radius, smois, xland, w10, rho_phy, emis_dust)
 
   IMPLICIT NONE
 
@@ -71,12 +71,9 @@ subroutine GinouxDustEmission(radius, smois, ssm, xland, w10, u_ts0, rho_phy, Ch
   ! input
   REAL, dimension(:), INTENT(IN) :: radius
   REAL, INTENT(IN) :: smois         ! volumetric soil moisture m3/m3
-  REAL, INTENT(IN) :: ssm           ! sediment supply map
   REAL, INTENT(IN) :: xland         ! land=1 or water=0
   REAL, INTENT(IN) :: w10           ! friction velocity (m/s)
-  REAL, INTENT(IN) :: u_ts0         ! dry threshold friction velocity (m/s)
   REAL, INTENT(IN) :: rho_phy       ! air density [kg/m3] (GOCART2G uses rho_phy=1.25)
-  REAL, INTENT(IN) :: Ch_DU         ! scaling factor
 
   ! Local variables
   integer :: nbins, n
@@ -350,7 +347,7 @@ subroutine GinouxDryThreshold(radius, u_thresh0)
     real, parameter ::  air_dens = 1.25  ! Air density = 1.25 kg m-3
     real, parameter ::  soil_density  = 2650.  ! km m-3
     real            ::  diameter         ! dust effective diameter [m]
-    real, parameter ::  grav = 9.81  ! TODO: check units (the other Ginoux has `* 100`)
+    real, parameter ::  grav = 9.81
 
     nbins = size(radius)
 
