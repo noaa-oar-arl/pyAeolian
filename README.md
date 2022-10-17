@@ -1,76 +1,76 @@
 # pyAeolian
- A python library to interface with [aeolian](https://en.wikipedia.org/wiki/Aeolian_processes)
- dust paramterizations
 
- ### To Install
+A Python library to interface with [aeolian](https://en.wikipedia.org/wiki/Aeolian_processes)
+dust paramterizations
 
- The easiest way to install is using pip
+### Installation
 
- ```cd``` into the pyAeolian directory where the setup.py file exists
+The easiest way to install is using `pip`.
 
- Then execute the command:
+`cd` into the `pyAeolian` directory where the `setup.py` file resides.
 
- ```
- pip install .
- ```
+Then execute the command:
 
- ### To use
+```
+pip install .
+```
 
- Simple example on how to use.  First import `pyaeolian`
+### Usage
 
- ```python
+Simple example on how to use.  First import `pyaeolian`.
 
- import pyaeolian
+```python
 
- ```
+import pyaeolian
 
- now all subroutines in the aeolian.F90 file is available to you in python
+```
 
- ```python
- Help on package pyaeolian:
+Now all subroutines in the `aeolian.F90` file are available to you in Python.
 
- NAME
-     pyaeolian
+```python
+Help on package pyaeolian:
 
- PACKAGE CONTENTS
-     aeolian
+NAME
+    pyaeolian
 
- FUNCTIONS
-     draxler_hflux(ustar, threshold_velocity)
+PACKAGE CONTENTS
+    aeolian
 
-     fecan_dry_limit(clayfrac)
+FUNCTIONS
+    draxler_hflux(ustar, threshold_velocity)
 
-     fecan_moisture_correction(volumetric_soil_moisture, sandfrac, clayfrac)
+    fecan_dry_limit(clayfrac)
 
-     fengsha(rhoa, volumetric_soil_moisture, ssm, land, ustar, clayfrac, sandfrac, drag_partition, dry_threshold)
+    fecan_moisture_correction(volumetric_soil_moisture, sandfrac, clayfrac)
 
-     fengsha_albedo(rhoa, volumetric_soil_moisture, ssm, land, ustar, clayfrac, sandfrac, drag_partition, dry_threshold)
+    fengsha(rhoa, volumetric_soil_moisture, ssm, land, ustar, clayfrac, sandfrac, drag_partition, dry_threshold)
 
-     mackinnon_drag_partition(z0)
+    fengsha_albedo(rhoa, volumetric_soil_moisture, ssm, land, ustar, clayfrac, sandfrac, drag_partition, dry_threshold)
 
-     mb95_drag_partition(z0)
+    mackinnon_drag_partition(z0)
 
-     mb95_kvh(clay)
+    mb95_drag_partition(z0)
 
-     modified_threshold_velocity(dry_threshold, moisture_correction, drag_partition)
+    mb95_kvh(clay)
 
-     shao_1996_soil_moisture(volumetric_soil_moisture)
+    modified_threshold_velocity(dry_threshold, moisture_correction, drag_partition)
 
-     shao_2004_soil_moisture(volumetric_soil_moisture)
+    shao_1996_soil_moisture(volumetric_soil_moisture)
 
-     volumetric_to_gravimetric(volumetric_soil_moisture, sandfrac)
+    shao_2004_soil_moisture(volumetric_soil_moisture)
 
- ```
+    volumetric_to_gravimetric(volumetric_soil_moisture, sandfrac)
 
-
- you can even wrap this with xarray.apply_ufunc to apply to a grid (without python loops [ really it is just pure C loops ] , ie very fast) here zz is an xarray.Dataset with the clay sand silt threshold drag partition and sediment supply map and cc is the CMAQ meteorology containing ustar and soil moisture.  Note that we just use constants for land and rhoa here.
+```
 
 
- ```python
- def xarray_fengsha(rhoa, volumetric_soil_moisture, ssm, land, ustar, clayfrac, sandfrac, drag_partition, dry_threshold):
-     func = lambda a,b,c,d,e,f,g,h,i: pyfengsha.fengsha(a,b,c,d,e,f,g,h,i)
-     return xr.apply_ufunc(func,rhoa, volumetric_soil_moisture, ssm, land, ustar, clayfrac, sandfrac, drag_partition, dry_threshold,vectorize=True)
+You can even wrap this with `xarray.apply_ufunc` to apply to a grid (without Python loops [ really it is just pure C loops ] , ie very fast) here `zz` is an `xarray.Dataset` with the clay sand silt threshold drag partition and sediment supply map, and `cc` is the CMAQ meteorology containing ustar and soil moisture.  Note that we just use constants for land and rhoa here.
 
- result = xarray_fengsha(zz.SSM*0+1000,c.SOIM1.isel(time=40),zz.SSM,zz.SSM*0+1,c.USTAR.isel(time=40),zz.CLAY_FRAC,zz.SAND_FRAC,zz.DRAG_PART,zz.UTHRES)
+```python
+def xarray_fengsha(rhoa, volumetric_soil_moisture, ssm, land, ustar, clayfrac, sandfrac, drag_partition, dry_threshold):
+    func = lambda a,b,c,d,e,f,g,h,i: pyfengsha.fengsha(a,b,c,d,e,f,g,h,i)
+    return xr.apply_ufunc(func,rhoa, volumetric_soil_moisture, ssm, land, ustar, clayfrac, sandfrac, drag_partition, dry_threshold,vectorize=True)
 
- ```
+result = xarray_fengsha(zz.SSM*0+1000,c.SOIM1.isel(time=40),zz.SSM,zz.SSM*0+1,c.USTAR.isel(time=40),zz.CLAY_FRAC,zz.SAND_FRAC,zz.DRAG_PART,zz.UTHRES)
+
+```
