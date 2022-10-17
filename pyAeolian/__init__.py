@@ -1,10 +1,21 @@
+from collections.abc import Iterable
+
 import aeolian as fdust
-from collections import Iterable
 import numpy as np
 import xarray as xr
 
 
-def fengsha(rhoa, volumetric_soil_moisture, ssm, land, ustar, clayfrac, sandfrac, drag_partition, dry_threshold):
+def fengsha(
+    rhoa,
+    volumetric_soil_moisture,
+    ssm,
+    land,
+    ustar,
+    clayfrac,
+    sandfrac,
+    drag_partition,
+    dry_threshold,
+):
     """This calculates the total flux using the fengsha parameterization
 
     Parameters
@@ -34,7 +45,17 @@ def fengsha(rhoa, volumetric_soil_moisture, ssm, land, ustar, clayfrac, sandfrac
         Total mass emitted [g/s]
 
     """
-    emission = fdust.fengsha(rhoa, volumetric_soil_moisture, ssm, land, ustar, clayfrac, sandfrac, drag_partition, dry_threshold)
+    emission = fdust.fengsha(
+        rhoa,
+        volumetric_soil_moisture,
+        ssm,
+        land,
+        ustar,
+        clayfrac,
+        sandfrac,
+        drag_partition,
+        dry_threshold,
+    )
     return emission
 
 
@@ -304,7 +325,7 @@ def shao_2004_soil_moisture(volumetric_soil_moisture):
         Description of returned object.
 
     """
-    if isinstance(clayfrac, Iterable):
+    if isinstance(volumetric_soil_moisture, Iterable):
         func = np.vectorize(fdust.shao_2004_soil_moisture)
         if isinstance(volumetric_soil_moisture, xr.DataArray):
             result = xr.apply_ufunc(func, volumetric_soil_moisture)
@@ -340,7 +361,7 @@ def modified_threshold_velocity(dry_threshold, moisture_correction, drag_partiti
     """
     if isinstance(dry_threshold, Iterable):
         func = np.vectorize(fdust.modified_threshold)
-        if isinstance(volumetric_soil_moisture, xr.DataArray):
+        if isinstance(dry_threshold, xr.DataArray):
             result = xr.apply_ufunc(func, dry_threshold, moisture_correction, drag_partition)
         else:
             result = func(dry_threshold, moisture_correction, drag_partition)
@@ -350,7 +371,17 @@ def modified_threshold_velocity(dry_threshold, moisture_correction, drag_partiti
     return result
 
 
-def xarray_fengsha_albedo(rhoa, volumetric_soil_moisture, ssm, land, ustar, clayfrac, sandfrac, drag_partition, dry_threshold):
+def xarray_fengsha_albedo(
+    rhoa,
+    volumetric_soil_moisture,
+    ssm,
+    land,
+    ustar,
+    clayfrac,
+    sandfrac,
+    drag_partition,
+    dry_threshold,
+):
     """This function applies the fengsha_albedo function onto an 2d xarray object (ie gridded files)
 
     Parameters
@@ -379,11 +410,36 @@ def xarray_fengsha_albedo(rhoa, volumetric_soil_moisture, ssm, land, ustar, clay
     xarray.DataArray
         Total mass emitted [g/s]
     """
-    func = lambda a, b, c, d, e, f, g, h, i: pyfengsha.fengsha_albedo(a, b, c, d, e, f, g, h, i)
-    return xr.apply_ufunc(func, rhoa, volumetric_soil_moisture, ssm, land, ustar, clayfrac, sandfrac, drag_partition, dry_threshold, vectorize=True)
+    # TODO: we don't have `pyfengsha`, nor a different `pyfengsha_albedo`
+    func = lambda a, b, c, d, e, f, g, h, i: pyfengsha.fengsha_albedo(  # noqa: E731,F821
+        a, b, c, d, e, f, g, h, i
+    )
+    return xr.apply_ufunc(
+        func,
+        rhoa,
+        volumetric_soil_moisture,
+        ssm,
+        land,
+        ustar,
+        clayfrac,
+        sandfrac,
+        drag_partition,
+        dry_threshold,
+        vectorize=True,
+    )
 
 
-def xarray_fengsha(rhoa, volumetric_soil_moisture, ssm, land, ustar, clayfrac, sandfrac, drag_partition, dry_threshold):
+def xarray_fengsha(
+    rhoa,
+    volumetric_soil_moisture,
+    ssm,
+    land,
+    ustar,
+    clayfrac,
+    sandfrac,
+    drag_partition,
+    dry_threshold,
+):
     """This function applies the fenghsa function onto an 2d xarray object (ie gridded files)
 
     Parameters
@@ -412,5 +468,17 @@ def xarray_fengsha(rhoa, volumetric_soil_moisture, ssm, land, ustar, clayfrac, s
     xarray.DataArray
         Total mass emitted [g/s]
     """
-    func = lambda a, b, c, d, e, f, g, h, i: fengsha(a, b, c, d, e, f, g, h, i)
-    return xr.apply_ufunc(func, rhoa, volumetric_soil_moisture, ssm, land, ustar, clayfrac, sandfrac, drag_partition, dry_threshold, vectorize=True)
+    func = lambda a, b, c, d, e, f, g, h, i: fengsha(a, b, c, d, e, f, g, h, i)  # noqa: E731
+    return xr.apply_ufunc(
+        func,
+        rhoa,
+        volumetric_soil_moisture,
+        ssm,
+        land,
+        ustar,
+        clayfrac,
+        sandfrac,
+        drag_partition,
+        dry_threshold,
+        vectorize=True,
+    )
