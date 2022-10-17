@@ -1,5 +1,6 @@
 # pyAeolian
- A python library to interface with aelian dust paramterizations
+ A python library to interface with [aeolian](https://en.wikipedia.org/wiki/Aeolian_processes)
+ dust paramterizations
 
  ### To Install
 

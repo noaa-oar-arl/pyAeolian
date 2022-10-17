@@ -285,7 +285,7 @@ subroutine fecan_dry_limit(clay,drylimit)
 
   !Inputs
   real, intent(in) :: clay ! fractional clay content
-  !outpus
+  !Outputs
   real, intent(out) :: drylimit ! fecan dry limit [kg/kg]
 
   drylimit = 0.
