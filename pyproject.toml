@@ -1,0 +1,10 @@
+[build-system]
+requires = ["setuptools<65", "wheel", "numpy"]
+
+[tool.black]
+line-length = 100
+
+[tool.isort]
+known_first_party = "pyaeolian"
+profile = "black"
+line_length = 100
