@@ -8,7 +8,7 @@ if __name__ == "__main__":
     setup(
         name="pyAeolian",
         version="0.1",
-        description="Wrapper around the NOAA ARL Aeolian developmental parameterizations",
+        description="Wrapper around the NOAA ARL aeolian dust developmental parameterizations",
         author="Barry D. Baker",
         lisense="MIT",
         author_email="barry.baker@noaa.gov",
