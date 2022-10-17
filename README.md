@@ -15,21 +15,21 @@
 
  ### To use
 
- Simple example on how to use.  First import pyAeolian
+ Simple example on how to use.  First import `pyaeolian`
 
  ```python
 
- import pyAeolian
+ import pyaeolian
 
  ```
 
  now all subroutines in the aeolian.F90 file is available to you in python
 
  ```python
- Help on package pyAeolian:
+ Help on package pyaeolian:
 
  NAME
-     pyAeolian
+     pyaeolian
 
  PACKAGE CONTENTS
      aeolian
