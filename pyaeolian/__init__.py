@@ -371,64 +371,6 @@ def modified_threshold_velocity(dry_threshold, moisture_correction, drag_partiti
     return result
 
 
-def xarray_fengsha_albedo(
-    rhoa,
-    volumetric_soil_moisture,
-    ssm,
-    land,
-    ustar,
-    clayfrac,
-    sandfrac,
-    drag_partition,
-    dry_threshold,
-):
-    """This function applies the fengsha_albedo function onto an 2d xarray object (ie gridded files)
-
-    Parameters
-    ----------
-    rhoa : xarray.DataArray
-        surface air density [kg/m3]
-    volumetric_soil_moisture : xarray.DataArray
-        volumetric soil moisture [m3/m3]
-    ssm : xarray.DataArray
-        Sediment Supply Map [-]
-    land : xarray.DataArray
-        Land or water flag [1 for land 0 for water]
-    ustar : xarray.DataArray
-        Boundary layer friction velocity
-    clayfrac : xarray.DataArray
-        Fractional clay content [-] : range 0->1
-    sandfrac : xarray.DataArray
-        Fractional sand content [-] : range 0->1
-    drag_partition : xarray.DataArray
-        drag partition [-]
-    dry_threshold : xarray.DataArray
-        Dry Threshold friction velocity [m/s]
-
-    Returns
-    -------
-    xarray.DataArray
-        Total mass emitted [g/s]
-    """
-    # TODO: we don't have `pyfengsha`, nor a different `pyfengsha_albedo`
-    func = lambda a, b, c, d, e, f, g, h, i: pyfengsha.fengsha_albedo(  # noqa: E731,F821
-        a, b, c, d, e, f, g, h, i
-    )
-    return xr.apply_ufunc(
-        func,
-        rhoa,
-        volumetric_soil_moisture,
-        ssm,
-        land,
-        ustar,
-        clayfrac,
-        sandfrac,
-        drag_partition,
-        dry_threshold,
-        vectorize=True,
-    )
-
-
 def xarray_fengsha(
     rhoa,
     volumetric_soil_moisture,
