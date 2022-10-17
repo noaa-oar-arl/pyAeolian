@@ -61,53 +61,54 @@ subroutine fengsha(rho_phy,smois,ssm,xland,ust,clay,sand,rdrag,u_ts0,emis_dust)
 
 end subroutine fengsha
 
-subroutine GinouxDustEmission(radius,smois, w10, src, Ch_DU)
+! TODO: where does `gwettop` come from? Is there supposed to be an grid point loop?
+! subroutine GinouxDustEmission(radius, smois, ssm, xland, w10, u_ts0, rho_phy, Ch_DU, emis_dust)
 
-  IMPLICIT NONE
+!   IMPLICIT NONE
 
-  ! output
-  REAL, INTENT(OUT) :: emis_dust
+!   ! output
+!   REAL, INTENT(OUT) :: emis_dust
 
-  ! input
-  REAL, dimension(:), INTENT(IN) :: radius
-  REAL, INTENT(IN) :: smois         ! volumetric soil moisture m3/m3
-  REAL, INTENT(IN) :: ssm           ! sediment supply map
-  REAL, INTENT(IN) :: xland         ! land=1 or water=0
-  REAL, INTENT(IN) :: w10           ! friction velocity (m/s)
-  REAL, INTENT(IN) :: u_ts0         ! dry threshold friction velocity (m/s)
-  REAL, INTENT(IN) :: rho_phy       ! air density [kg/m3] (GOCART2G uses rho_phy=1.25)
+!   ! input
+!   REAL, dimension(:), INTENT(IN) :: radius
+!   REAL, INTENT(IN) :: smois         ! volumetric soil moisture m3/m3
+!   REAL, INTENT(IN) :: ssm           ! sediment supply map
+!   REAL, INTENT(IN) :: xland         ! land=1 or water=0
+!   REAL, INTENT(IN) :: w10           ! friction velocity (m/s)
+!   REAL, INTENT(IN) :: u_ts0         ! dry threshold friction velocity (m/s)
+!   REAL, INTENT(IN) :: rho_phy       ! air density [kg/m3] (GOCART2G uses rho_phy=1.25)
+!   REAL, INTENT(IN) :: Ch_DU         ! scaling factor
 
-  REAL, INTENT(IN) :: Ch_DU         ! scaling factor
-  ! Local variables
+!   ! Local variables
+!   integer :: ilwi, nbins, n, i, j
+!   real :: diameter, u_thresh0, u_thresh
+!   real, parameter :: g0 = 9.81 ! gravity
+!   real, parameter :: soil_density = 2650.  ! km m-3
 
-  integer :: ilwi
-  real, parameter :: g0 = 9.81 ! gravity
-  real, parameter :: soil_density = 2650.  ! km m-3
+!   nbins = size(radius)
 
-  nbins = size(radius)
+!   do n = 1, nbins
+!     diameter = 2. * radius(n)
+!     u_thresh0 = 0.13 * sqrt(soil_density*g0*diameter/rho_phy) &
+!                        * sqrt(1.+6.e-7/(soil_density*g0*diameter**2.5)) &
+!               / sqrt(1.928*(1331.*(100.*diameter)**1.56+0.38)**0.092 - 1.)
 
-  do n = 1, nbins
-    diameter = 2. * radius(n)
-    u_thresh0 = 0.13 * sqrt(soil_density*g0*diameter/rho_phy) &
-                       * sqrt(1.+6.e-7/(soil_density*g0*diameter**2.5)) &
-              / sqrt(1.928*(1331.*(100.*diameter)**1.56+0.38)**0.092 - 1.)
+!     if ( xland /= 1 ) cycle ! done emit over water
 
-    if ( xland /= 1 ) cycle ! done emit over water
+!     if(gwettop(i,j) .lt. 0.5) then
+!         u_thresh = amax1(0.,u_thresh0* (1.2+0.2*alog10(max(1.e-3,gwettop(i,j)))))
 
-    if(gwettop(i,j) .lt. 0.5) then
-        u_thresh = amax1(0.,u_thresh0* (1.2+0.2*alog10(max(1.e-3,gwettop(i,j)))))
-
-        if(w10m .gt. u_thresh) then
-  !       Emission of dust [kg m-2 s-1]
-          emis_dust(n) = w10m**2. * (w10m-u_thresh)
-        endif
-    endif
+!         if(w10m .gt. u_thresh) then
+!   !       Emission of dust [kg m-2 s-1]
+!           emis_dust(n) = w10m**2. * (w10m-u_thresh)
+!         endif
+!     endif
 
 
-  end do
-  return
+!   end do
+!   return
 
-end subroutine GinouxDustEmission
+! end subroutine GinouxDustEmission
 
 subroutine mackinnon_drag(z0,R)
 
@@ -335,7 +336,7 @@ subroutine modified_threshold(u_ts0, H, drag, u_ts)
   return
 end subroutine modified_threshold
 
-subroutine GinouxDryThreshold(radius)
+subroutine GinouxDryThreshold(radius, u_thresh0)
 
     Implicit NONE
 
@@ -346,9 +347,11 @@ subroutine GinouxDryThreshold(radius)
     real, dimension(:), intent(out) :: u_thresh0
 
     ! local variables
+    integer :: nbins, n
     real, parameter ::  air_dens = 1.25  ! Air density = 1.25 kg m-3
     real, parameter ::  soil_density  = 2650.  ! km m-3
     real            ::  diameter         ! dust effective diameter [m]
+    real, parameter ::  grav = 9.81  ! TODO: check units (the other Ginoux has `* 100`)
 
     nbins = size(radius)
 
