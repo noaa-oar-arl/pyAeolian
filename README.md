@@ -1,7 +1,7 @@
 # pyAeolian
 
 A Python library to interface with [aeolian](https://en.wikipedia.org/wiki/Aeolian_processes)
-dust paramterizations
+dust parameterizations
 
 ### Installation
 
