@@ -10,7 +10,7 @@ if __name__ == "__main__":
         version="0.1",
         description="Wrapper around the NOAA ARL aeolian dust developmental parameterizations",
         author="Barry D. Baker",
-        lisense="MIT",
+        license="GPLv3",
         author_email="barry.baker@noaa.gov",
         packages=["pyaeolian"],
         ext_modules=[ext],
